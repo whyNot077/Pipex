@@ -8,18 +8,18 @@ open, close, read, write, malloc, free, perror, strerror, access,
 dup, dup2, execve, exit, fork, pipe, unlink, wait, waitpid    
 
 
-- perror(): This function is used to print an error message to the console.
+- perror(): This function is used to print an error message to the console.  
 ```c
 perror("Error message");
 ```
 
-- strerror(): This function is used to get a string describing the error code passed as an argument.
+- strerror(): This function is used to get a string describing the error code passed as an argument.  
 ```c
 char *errorString = strerror(errno);
 printf("Error message: %s\n", errorString);
 ```
 
-- access(): This function is used to check if a file or directory can be accessed.
+- access(): This function is used to check if a file or directory can be accessed.  
 ```c
 int result = access("file.txt", R_OK);
 if (result == -1) {
@@ -28,7 +28,7 @@ if (result == -1) {
 }
 ```
 
-- dup(): This function is used to duplicate a file descriptor.
+- dup(): This function is used to duplicate a file descriptor.  
 ```c
 int fd2 = dup(fd);
 if (fd2 == -1) {
@@ -37,7 +37,7 @@ if (fd2 == -1) {
 }
 ```
 
-- dup2(): This function is used to duplicate a file descriptor to a specified file descriptor.
+- dup2(): This function is used to duplicate a file descriptor to a specified file descriptor.  
 ```c
 int fd2 = dup2(fd, STDOUT_FILENO);
 if (fd2 == -1) {
@@ -46,7 +46,7 @@ if (fd2 == -1) {
 }
 ```
 
-- execve(): This function is used to replace the current process with a new process.
+- execve(): This function is used to replace the current process with a new process.  
 ```c
 char *args[] = {"ls", "-l", NULL};
 execve("/bin/ls", args, NULL);
@@ -54,7 +54,7 @@ perror("Error executing program");
 exit(EXIT_FAILURE);
 ```
 
-- fork(): This function is used to create a new process.
+- fork(): This function is used to create a new process.  
 ```c
 pid_t childPid = fork();
 if (childPid == -1) {
@@ -68,7 +68,7 @@ if (childPid == 0) {
 }
 ```
 
-- pipe(): This function is used to create a pipe for interprocess communication.
+- pipe(): This function is used to create a pipe for interprocess communication.  
 ```c
 int pipefd[2];
 int result = pipe(pipefd);
@@ -77,5 +77,63 @@ if (result == -1) {
    exit(EXIT_FAILURE);
 }
 ```
+
+- unlink(): This function is used to delete a file.   
+```c
+int result = unlink("file.txt");
+if (result == -1) {
+   perror("Error deleting file");
+   exit(EXIT_FAILURE);
+}
+```
+
+- wait(): This function is used to wait for a child process to terminate.   
+```c
+pid_t childPid = fork();
+if (childPid == -1) {
+   perror("Error forking process");
+   exit(EXIT_FAILURE);
+}
+if (childPid == 0) {
+   // Child process
+   exit(EXIT_SUCCESS);
+} else {
+   // Parent process
+   int status;
+   pid_t result = wait(&status);
+   if (result == -1) {
+      perror("Error waiting for child process");
+      exit(EXIT_FAILURE);
+   }
+   if (WIFEXITED(status)) {
+      printf("Child process exited with status %d\n", WEXITSTATUS(status));
+   }
+}
+```
+
+- waitpid(): This function is used to wait for a specific child process to terminate.   
+```c
+pid_t childPid = fork();
+if (childPid == -1) {
+   perror("Error forking process");
+   exit(EXIT_FAILURE);
+}
+if (childPid == 0) {
+   // Child process
+   exit(EXIT_SUCCESS);
+} else {
+   // Parent process
+   int status;
+   pid_t result = waitpid(childPid, &status, 0);
+   if (result == -1) {
+      perror("Error waiting for child process");
+      exit(EXIT_FAILURE);
+   }
+   if (WIFEXITED(status)) {
+      printf("Child process exited with status %d\n", WEXITSTATUS(status));
+   }
+}
+```
+
 </div>
 </details>
