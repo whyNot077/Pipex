@@ -3,8 +3,10 @@
 <details>
 <summary>External functions</summary>
 <div markdown="1">
+
 open, close, read, write, malloc, free, perror, strerror, access, 
-dup, dup2, execve, exit, fork, pipe, unlink, wait, waitpid  
+dup, dup2, execve, exit, fork, pipe, unlink, wait, waitpid    
+
 
 - perror(): This function is used to print an error message to the console.
 ```c
