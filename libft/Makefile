@@ -6,7 +6,7 @@
 #    By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 13:37:57 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/15 13:42:10 by minkim3          ###   ########.fr        #
+#    Updated: 2023/03/20 15:27:26 by minkim3          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRCS = allocate_new_memory/ft_calloc.c\
 		string/ft_strjoin.c\
 		string/ft_substr.c\
 		string/ft_strtrim.c\
+		string/ft_strtok.c\
 		compare_or_find_something_in_string/ft_memchr.c\
 		compare_or_find_something_in_string/ft_memcmp.c\
 		compare_or_find_something_in_string/ft_strchr.c\
