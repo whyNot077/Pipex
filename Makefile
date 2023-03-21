@@ -6,10 +6,11 @@
 #    By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/21 21:36:47 by minkim3          ###   ########.fr        #
+#    Updated: 2023/03/21 21:53:37 by minkim3          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+CC			  = cc
 CFLAGS        = -Wall -Wextra -Werror -MMD -fsanitize=address
 NAME          = pipex.a
 AR            = ar -rcs
@@ -19,10 +20,20 @@ LIBFT         = libft/libft.a
 SOURCES       = pipex.c\
                 error.c\
 				get_path.c\
+				fork_child.c\
+				init_and_close.c
+S_SOURCES	= pipex.c
+B_SOURCES	= get_path.c\
 				fork_child.c
-OBJECTS       = $(SOURCES:.c=.o)
 
-all: lib $(NAME) pipex
+OBJECTS    = $(SOURCES:.c=.o)
+S_OBJECTS  = $(S_SOURCES:.c=.o)
+B_OBJECTS  = $(B_SOURCES:.c=.o)
+
+all:
+	make lib
+	make $(NAME)
+	make pipex
 
 $(NAME): $(OBJECTS)
 	$(AR) $@ $^
@@ -34,18 +45,25 @@ lib:
 	make -C libft
 
 clean:
-	$(RM) $(OBJECTS) $(OBJECTS:.o=.d)
+	$(RM) $(OBJECTS) $(OBJECTS:.o=.d) $(S_OBJECTS) $(S_OBJECTS:.o=.d) $(B_OBJECTS) $(B_OBJECTS:.o=.d)
 	make clean -C libft
 
 fclean: clean
-	$(RM) $(NAME) pipex
+	$(RM) $(NAME) pipex pipex_bonus
 	make fclean -C libft
 
-re: fclean all
+re:
+	make fclean
+	make all
 
-pipex: $(OBJECTS) $(LIBFT)
-	$(CC) $(CFLAGS) $^ -o $@
+pipex: $(S_OBJECTS) $(NAME)
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBFT)
 
-.PHONY: all lib clean fclean re
+pipex_bonus: $(B_OBJECTS) $(NAME)
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBFT)
 
--include $(OBJECTS:.o=.d)
+bonus: lib $(NAME) pipex_bonus
+
+.PHONY: all lib clean fclean re bonus
+
+-include $(OBJECTS:.o=.d) $(S_OBJECTS:.o=.d) $(B_OBJECTS:.o=.d)

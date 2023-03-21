@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:39:28 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 21:35:28 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/21 21:51:43 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*find_path(char *envp[])
 	i = 0;
 	while (envp[i] != NULL)
 	{
-		if (ft_strncmp(envp[i], path_key, path_key_len) == 0)
+		if (ft_strncmp(envp[i], path_key, path_key_len) == EQUAL)
 		{
 			path = envp[i] + path_key_len;
 			break ;
