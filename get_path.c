@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:39:28 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 20:39:08 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/21 21:19:30 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,36 @@ static char	*find_path(char *envp[])
 	return (path);
 }
 
-char	*get_path(char *command, char *envp[])
+void	get_path(t_pipe *pipe, char *envp[])
 {
 	char	*path_value;
-	char	*path;
-	char	*command_path;
-	int		path_len;
+	char	**paths;
 
 	path_value = find_path(envp);
-	path = ft_strtok(&path_value, ":");
-	while (path != NULL)
+	paths = ft_split(path_value, ':');
+	pipe->path = ft_split(path_value, ':');
+}
+
+char	*get_accessible_path(char **paths, char *command)
+{
+	char	*command_path;
+	int		path_len;
+	int		i;
+
+	i = 0;
+	while (paths[i] != NULL)
 	{
-		path_len = ft_strlen(path);
-		command_path = \
-			malloc(path_len + ft_strlen("/") + ft_strlen(command) + 1);
+		path_len = ft_strlen(paths[i]);
+		command_path = malloc(path_len + ft_strlen("/") + ft_strlen(command) + 1);
 		if (!command_path)
 			perror_return("Error allocating memory", 1);
-		ft_strlcpy(command_path, path, path_len + 1);
+		ft_strlcpy(command_path, paths[i], path_len + 1);
 		ft_strlcat(command_path, "/", path_len + ft_strlen("/") + 1);
-		ft_strlcat(command_path, command, \
-			path_len + ft_strlen("/") + ft_strlen(command) + 1);
-		ft_printf("Trying: %s\n", command_path);
+		ft_strlcat(command_path, command, path_len + ft_strlen("/") + ft_strlen(command) + 1);
 		if (access(command_path, X_OK) == SUCCESS)
 			return (command_path);
 		free(command_path);
-		path = ft_strtok(&path_value, ":");
+		i++;
 	}
 	perror_return("Could not find the command path", 1);
 	return (NULL);

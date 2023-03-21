@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 20:57:57 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 20:39:27 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/21 21:22:44 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	fork_child_one(t_pipe *pipe, \
 	char	**argv;
 
 	argv = get_command(first_command);
-	path = get_path(argv[0], envp);
+	path = get_accessible_path(pipe->path, argv[0]);
 	pipe->pid_one = fork();
 	if (pipe->pid_one == ERROR)
 		perror_return("Error forking", 1);
@@ -67,7 +67,7 @@ static void	fork_child_two(t_pipe *pipe, \
 	char	**argv;
 
 	argv = get_command(second_command);
-	path = get_path(argv[0], envp);
+	path = get_accessible_path(pipe->path, argv[0]);
 	pipe->pid_two = fork();
 	if (pipe->pid_two == ERROR)
 		perror_return("Error forking", 1);
@@ -81,6 +81,14 @@ static void	fork_child_two(t_pipe *pipe, \
 		execve(path, argv, envp);
 		perror_return("Error executing command 2", 1);
 	}
+}
+
+static void	close_parent(t_pipe *pipe)
+{
+	close(pipe->input_fd);
+	close(pipe->output_fd);
+	close(pipe->pipe_fd[0]);
+	close(pipe->pipe_fd[1]);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -98,10 +106,13 @@ int	main(int argc, char *argv[], char *envp[])
 	second_command = argv[3];
 	output_file = argv[4];
 	pipe = init_pipe(input_file, output_file);
+	get_path(pipe, envp);
 	fork_child_one(pipe, first_command, envp);
 	fork_child_two(pipe, second_command, envp);
+	close_parent(pipe);
 	waitpid(pipe->pid_one, NULL, 0);
 	waitpid(pipe->pid_two, NULL, 0);
+	free_two_dementional_array(pipe->path);
 	free(pipe);
 	return (0);
 }

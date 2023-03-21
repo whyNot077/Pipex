@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 20:30:33 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/21 21:19:35 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ typedef struct s_pipe
 	int		pipe_fd[2];
 	pid_t	pid_one;
 	pid_t	pid_two;
+	char	**path;
 }	t_pipe;
 
 void	perror_return(const char *message, int status);
-char	*get_path(char *command, char *envp[]);
+void	get_path(t_pipe *pipe, char *envp[]);
+char	*get_accessible_path(char **paths, char *command);
 
 #endif
