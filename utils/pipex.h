@@ -6,14 +6,14 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 21:54:04 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/21 21:56:03 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <sys/wait.h>

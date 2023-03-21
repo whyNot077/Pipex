@@ -6,11 +6,11 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 20:57:57 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 21:52:11 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/21 21:56:10 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "utils/pipex.h"
 
 int	main(int argc, char *argv[], char *envp[])
 {
