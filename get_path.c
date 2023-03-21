@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:39:28 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 21:19:30 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/21 21:35:28 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,14 @@ char	*get_accessible_path(char **paths, char *command)
 	while (paths[i] != NULL)
 	{
 		path_len = ft_strlen(paths[i]);
-		command_path = malloc(path_len + ft_strlen("/") + ft_strlen(command) + 1);
+		command_path = \
+			malloc(path_len + ft_strlen("/") + ft_strlen(command) + 1);
 		if (!command_path)
 			perror_return("Error allocating memory", 1);
 		ft_strlcpy(command_path, paths[i], path_len + 1);
 		ft_strlcat(command_path, "/", path_len + ft_strlen("/") + 1);
-		ft_strlcat(command_path, command, path_len + ft_strlen("/") + ft_strlen(command) + 1);
+		ft_strlcat(command_path, \
+			command, path_len + ft_strlen("/") + ft_strlen(command) + 1);
 		if (access(command_path, X_OK) == SUCCESS)
 			return (command_path);
 		free(command_path);
