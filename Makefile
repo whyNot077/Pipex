@@ -6,7 +6,7 @@
 #    By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/20 15:58:36 by minkim3          ###   ########.fr        #
+#    Updated: 2023/03/21 17:40:14 by minkim3          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ RM            = rm -f
 HEADER        = pipex.h
 LIBFT         = libft/libft.a
 SOURCES       = pipex.c\
-                error.c
+                error.c\
+				get_path.c
 OBJECTS       = $(SOURCES:.c=.o)
 
 all: lib $(NAME) pipex
