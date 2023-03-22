@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 12:59:16 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 13:07:56 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ enum e_definition
 	SUCCESS = 0,
 };
 
+typedef struct s_args
+{
+	char	*input_file;
+	char	*first_command;
+	char	*second_command;
+	char	*output_file;
+}   t_args;
+
 typedef struct s_pipe
 {
 	int		input_fd;
@@ -39,6 +47,7 @@ typedef struct s_pipe
 
 void	perror_return(const char *message, int status);
 void	get_path(t_pipe *pipe, char *envp[]);
+t_args	*get_args(int argc, char *argv[]);
 char	*get_accessible_path(char **paths, char *command);
 void	fork_child_one(t_pipe *pipe, \
 	const char *first_command, char *envp[]);

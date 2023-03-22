@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 12:58:51 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 13:05:31 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,22 @@ t_pipe	*init_pipe(const char *input_file, const char *output_file)
 	if (pipe(init_pipe->pipe_fd) == ERROR)
 		perror_return("Error creating pipe", 1);
 	return (init_pipe);
+}
+
+t_args *get_args(int argc, char *argv[])
+{
+	t_args	*args;
+
+	if (argc != 5)
+		perror_return("Incorrect number of arguments", 1);
+	args = (t_args *)malloc(sizeof(t_args));
+	if (!args)
+		perror_return("Failed to allocate memory for arguments", 1);
+	args->input_file = argv[1];
+	args->first_command = argv[2];
+	args->second_command = argv[3];
+	args->output_file = argv[4];
+	return (args);
 }
 
 void	close_parent(t_pipe *pipe)

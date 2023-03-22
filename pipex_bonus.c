@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:00 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 21:59:18 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 13:01:23 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_pipe	*pipe;
 	char	*input_file;
-	char	**commands;
+	char	*first_command;
+	char	*second_command;
 	char	*output_file;
 
-	if (argc < 4)
+	if (argc != 5)
 		perror_return("Incorrect number of arguments", 1);
 	input_file = argv[1];
 	first_command = argv[2];
@@ -32,7 +33,6 @@ int	main(int argc, char *argv[], char *envp[])
 	close_parent(pipe);
 	waitpid(pipe->pid_one, NULL, 0);
 	waitpid(pipe->pid_two, NULL, 0);
-	free_two_dementional_array(pipe->path);
-	free(pipe);
+	free_pipe(pipe);
 	return (0);
 }
