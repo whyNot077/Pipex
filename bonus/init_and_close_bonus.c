@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 22:01:59 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 22:05:21 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static void	args_to_pipe(t_args *args, t_pipe *pipe)
 {
 	int		*pipes;
 
+	pipe->input_fd = -1;
+	pipe->output_fd = -1;
 	pipe->num_commands = args->num_commands;
 	pipe->commands = args->commands;
 	pipe->here_doc = args->here_doc;
@@ -81,8 +83,7 @@ t_pipe	*init_pipe(t_args *args)
 	pipe = ft_calloc(1, sizeof(t_pipe));
 	if (!pipe)
 		perror_return("Failed to allocate memory for pipe", 1);
-	pipe->input_fd = -1;
-	pipe->output_fd = -1;
+	args_to_pipe(args, pipe);
 	if (args->here_doc)
 		init_heardoc(args, pipe);
 	else
@@ -95,7 +96,6 @@ t_pipe	*init_pipe(t_args *args)
 		open(args->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipe->output_fd < 0)
 		perror_return("Failed to open output file", 1);
-	args_to_pipe(args, pipe);
 	return (pipe);
 }
 
