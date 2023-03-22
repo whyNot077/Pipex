@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_path.c                                         :+:      :+:    :+:   */
+/*   get_path_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:39:28 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 13:33:47 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 20:19:57 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*get_accessible_path(char **paths, char *command)
 		ft_strlcat(command_path, "/", path_len + ft_strlen("/") + 1);
 		ft_strlcat(command_path, \
 			command, path_len + ft_strlen("/") + ft_strlen(command) + 1);
-		if (access(command_path, X_OK) == SUCCESS)
+		if (access(command_path, F_OK) == SUCCESS)
 			return (command_path);
 		free(command_path);
 		i++;

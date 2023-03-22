@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 16:49:53 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 20:58:58 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void	perror_return(const char *message, int status);
 void	get_path(t_pipe *pipe, char *envp[]);
 t_args	*get_args(int argc, char *argv[]);
 char	*get_accessible_path(char **paths, char *command);
-void	fork_child_one(t_pipe *pipe, \
-	const char *first_command, char *envp[]);
-void	fork_child_two(t_pipe *pipe, \
-	const char *second_command, char *envp[]);
-void	init_pipe(t_args *args, t_pipe *pipe);
+void	fork_childs(t_pipe *pipe, t_args *args, char *envp[]);
+t_pipe	*init_pipe(t_args *args);
 void	close_parent(t_pipe *pipe);
 void	free_pipe(t_pipe *pipe);
+void	execute_pipeline(t_pipe *pipe, \
+	t_args *args, int index, char *envp[]);
+void	create_pipes_and_execute(t_pipe *pipe, t_args *args, char *envp[]);
 
 #endif

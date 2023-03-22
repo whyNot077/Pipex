@@ -6,63 +6,71 @@
 #    By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/21 21:55:41 by minkim3          ###   ########.fr        #
+#    Updated: 2023/03/22 21:01:34 by minkim3          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC			  = cc
-CFLAGS        = -Wall -Wextra -Werror -MMD -fsanitize=address
-NAME          = pipex.a
-AR            = ar -rcs
-RM            = rm -f
-HEADER        = pipex.h
-LIBFT         = libft/libft.a
-SOURCES       = utils/error.c\
-				utils/get_path.c\
-				utils/fork_child.c\
-				utils/init_and_close.c
-S_SOURCES	= pipex.c
-B_SOURCES	= get_path.c\
-				fork_child.c
+CC              = cc
+CFLAGS          = -Wall -Wextra -Werror -MMD -fsanitize=address
+NAME            = pipex.a
+AR              = ar -rcs
+RM              = rm -f
+LIBFT           = libft/libft.a
 
-OBJECTS    = $(SOURCES:.c=.o)
-S_OBJECTS  = $(S_SOURCES:.c=.o)
-B_OBJECTS  = $(B_SOURCES:.c=.o)
+SOURCES         = mandatory/error.c\
+                  mandatory/get_path.c\
+                  mandatory/fork_child.c\
+                  mandatory/init_and_close.c\
+                  mandatory/pipex.c
+SOURCES_H       = mandatory/pipex.h
+S_OBJECTS       = $(SOURCES:.c=.o)
+S_EXEC          = pipex
 
-all:
-	make lib
-	make $(NAME)
-	make pipex
+B_SOURCES       = bonus/error_bonus.c\
+                  bonus/get_path_bonus.c\
+                  bonus/create_pipes_and_execute_bonus.c\
+                  bonus/init_and_close_bonus.c\
+                  bonus/pipex_bonus.c\
+				  bonus/get_args_bonus.c\
+				  bonus/execute_pipeline_bonus.c
+B_SOURCES_H     = bonus/pipex_bonus.h
+B_OBJECTS       = $(B_SOURCES:.c=.o)
+B_EXEC          = pipex
 
-$(NAME): $(OBJECTS)
-	$(AR) $@ $^
+ifdef WITH_BONUS
+	OBJECTS = $(B_OBJECTS)
+	HEADER := $(B_SOURCES_H)
+else
+	OBJECTS = $(S_OBJECTS)
+	HEADER := $(SOURCES_H)
+endif
 
-$(OBJECTS): %.o: %.c
+all: $(NAME)
+
+$(NAME): $(OBJECTS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -o $(S_EXEC)
+
+bonus: $(B_OBJECTS) $(LIBFT)
+	$(CC) $(CFLAGS) $(B_OBJECTS) $(LIBFT) -o $(B_EXEC)
+
+%.o : %.c $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-lib:
+$(LIBFT):
 	make -C libft
 
 clean:
-	$(RM) $(OBJECTS) $(OBJECTS:.o=.d) $(S_OBJECTS) $(S_OBJECTS:.o=.d) $(B_OBJECTS) $(B_OBJECTS:.o=.d)
+	$(RM) $(S_OBJECTS) $(S_OBJECTS:.o=.d) $(B_OBJECTS) $(B_OBJECTS:.o=.d)
 	make clean -C libft
 
 fclean: clean
-	$(RM) $(NAME) pipex pipex_bonus
+	$(RM) $(NAME) $(S_EXEC) $(B_EXEC)
 	make fclean -C libft
 
 re:
 	make fclean
 	make all
 
-pipex: $(S_OBJECTS) $(NAME)
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBFT)
-
-pipex_bonus: $(B_OBJECTS) $(NAME)
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBFT)
-
-bonus: lib $(NAME) pipex_bonus
-
 .PHONY: all lib clean fclean re bonus
 
--include $(OBJECTS:.o=.d) $(S_OBJECTS:.o=.d) $(B_OBJECTS:.o=.d)
+-include $(OBJECTS:.o=.d) $(B_OBJECTS:.o=.d)

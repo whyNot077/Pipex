@@ -6,33 +6,58 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 16:34:57 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 20:44:59 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-static void	init_heardoc(t_args *args, t_pipe *pipe)
+static void	write_to_pipe_for_here_doc(int fd, const char *limiter)
 {
-	int		pipe_fds[2];
 	char	*line;
-	ssize_t	read;
 
 	line = NULL;
-	if (pipe2(pipe_fds, O_CLOEXEC) == -1)
-		perror_return("Failed to create pipe for here_doc", 1);
-	read = getline(&line, NULL, stdin);
-	while (read != -1)
+	line = get_next_line(STDIN_FILENO);
+	while (line != NULL)
 	{
-		if (strcmp(line, args->limiter) == 0)
+		if (ft_strcmp(line, limiter) == EQUAL)
+		{
+			free(line);
 			break ;
-		write(pipe_fds[1], line, read);
-		read = getline(&line, NULL, stdin);
-	}
-	close(pipe_fds[1]);
-	pipe->input_fd = pipe_fds[0];
-	if (line)
+		}
+		if (write(fd, line, ft_strlen(line)) == -1)
+		{
+			free(line);
+			perror_return("Failed to write to pipe for here_doc", 1);
+		}
 		free(line);
+		line = get_next_line(STDIN_FILENO);
+	}
+	close(fd);
+	exit(0);
+}
+
+static void	init_heardoc(t_args *args, t_pipe *t_pipe)
+{
+	int		pipe_fds[2];
+	pid_t	pid;
+
+	if (pipe(pipe_fds) == -1)
+		perror_return("Failed to create pipe for here_doc", 1);
+	pid = fork();
+	if (pid < 0)
+		perror_return("Failed to fork for here_doc", 1);
+	else if (pid == 0)
+	{
+		close(pipe_fds[0]);
+		write_to_pipe_for_here_doc(pipe_fds[1], args->limiter);
+	}
+	else
+	{
+		close(pipe_fds[1]);
+		t_pipe->input_fd = pipe_fds[0];
+		t_pipe->pid[0] = pid;
+	}
 }
 
 static void	args_to_pipe(t_args *args, t_pipe *pipe)
@@ -43,8 +68,13 @@ static void	args_to_pipe(t_args *args, t_pipe *pipe)
 	pipe->limiter = args->limiter;
 }
 
-void	init_pipe(t_args *args, t_pipe *pipe)
+t_pipe	*init_pipe(t_args *args)
 {
+	t_pipe	*pipe;
+
+	pipe = ft_calloc(1, sizeof(t_pipe));
+	if (!pipe)
+		perror_return("Failed to allocate memory for pipe", 1);
 	pipe->input_fd = -1;
 	pipe->output_fd = -1;
 	if (args->here_doc)
@@ -60,18 +90,21 @@ void	init_pipe(t_args *args, t_pipe *pipe)
 	if (pipe->output_fd < 0)
 		perror_return("Failed to open output file", 1);
 	args_to_pipe(args, pipe);
+	return (pipe);
 }
 
 void	close_parent(t_pipe *pipe)
 {
+	int	i;
+	int	num_pipes;
+
 	close(pipe->input_fd);
 	close(pipe->output_fd);
-	close(pipe->pipe_fd[0]);
-	close(pipe->pipe_fd[1]);
-}
-
-void	free_pipe(t_pipe *pipe)
-{
-	free_two_dementional_array(pipe->path);
-	free(pipe);
+	num_pipes = (pipe->num_commands - 1) * 2;
+	i = 0;
+	while (i < num_pipes)
+	{
+		close(pipe->pipes[i]);
+		i++;
+	}
 }
