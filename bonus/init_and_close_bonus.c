@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 22:05:21 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 22:08:28 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ static void	args_to_pipe(t_args *args, t_pipe *pipe)
 	if (!pipes)
 		perror_return("Failed to allocate memory for pipes", 1);
 	pipe->pipes = pipes;
+	pipe->pid = (pid_t *)malloc(sizeof(pid_t) * args->num_commands);
+	if (!pipe->pid)
+		perror_return("Failed to allocate memory for PIDs", 1);
 }
 
 t_pipe	*init_pipe(t_args *args)

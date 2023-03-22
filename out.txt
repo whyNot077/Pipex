@@ -1,1 +1,9 @@
-      14
+Makefile
+README.md
+bonus
+libft
+mandatory
+out.txt
+pipex
+pipex_bonus.c
+txt1.txt

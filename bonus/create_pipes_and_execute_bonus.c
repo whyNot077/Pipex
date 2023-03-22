@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:36:08 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 21:49:44 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 22:08:17 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ void	create_pipes_and_execute(t_pipe *pipe, t_args *args, char *envp[])
 	num_commands = args->num_commands;
 	pipes = pipe->pipes;
 	create_pipes(pipes, num_commands);
-	pipe->pid = (pid_t *)malloc(sizeof(pid_t) * num_commands);
-	if (!pipe->pid)
-		perror_return("Failed to allocate memory for PIDs", 1);
 	while (index < num_commands)
 	{
 		execute_pipeline(pipe, args, index, envp);
