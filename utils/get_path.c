@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:39:28 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 21:51:43 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 10:28:01 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	get_path(t_pipe *pipe, char *envp[])
 
 	path_value = find_path(envp);
 	paths = ft_split(path_value, ':');
-	pipe->path = ft_split(path_value, ':');
+	pipe->path = paths;
 }
 
 char	*get_accessible_path(char **paths, char *command)
