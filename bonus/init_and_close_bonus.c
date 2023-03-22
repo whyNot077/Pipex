@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 20:44:59 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 22:01:59 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,16 @@ static void	init_heardoc(t_args *args, t_pipe *t_pipe)
 
 static void	args_to_pipe(t_args *args, t_pipe *pipe)
 {
+	int		*pipes;
+
 	pipe->num_commands = args->num_commands;
 	pipe->commands = args->commands;
 	pipe->here_doc = args->here_doc;
 	pipe->limiter = args->limiter;
+	pipes = (int *)malloc(sizeof(int) * (args->num_commands - 1) * 2);
+	if (!pipes)
+		perror_return("Failed to allocate memory for pipes", 1);
+	pipe->pipes = pipes;
 }
 
 t_pipe	*init_pipe(t_args *args)
