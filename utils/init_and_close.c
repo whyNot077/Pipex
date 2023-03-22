@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 21:52:27 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 12:58:51 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,10 @@ void	close_parent(t_pipe *pipe)
 	close(pipe->output_fd);
 	close(pipe->pipe_fd[0]);
 	close(pipe->pipe_fd[1]);
+}
+
+void	free_pipe(t_pipe *pipe)
+{
+	free_two_dementional_array(pipe->path);
+	free(pipe);	
 }

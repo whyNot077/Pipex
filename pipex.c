@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 20:57:57 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 21:56:10 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 12:59:02 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	main(int argc, char *argv[], char *envp[])
 	close_parent(pipe);
 	waitpid(pipe->pid_one, NULL, 0);
 	waitpid(pipe->pid_two, NULL, 0);
-	free_two_dementional_array(pipe->path);
-	free(pipe);
+	free_pipe(pipe);
 	return (0);
 }

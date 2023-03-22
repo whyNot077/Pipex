@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/21 21:56:03 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/22 12:59:16 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ void	fork_child_two(t_pipe *pipe, \
 	const char *second_command, char *envp[]);
 t_pipe	*init_pipe(const char *input_file, const char *output_file);
 void	close_parent(t_pipe *pipe);
+void	free_pipe(t_pipe *pipe);
 
 #endif
