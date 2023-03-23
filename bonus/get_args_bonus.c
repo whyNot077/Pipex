@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 15:33:47 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/23 17:31:17 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 18:00:25 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	parse_arguments(t_pipe *pipe, int argc, char *argv[])
 	if (ft_strcmp(argv[1], "here_doc") == EQUAL)
 	{
 		pipe->here_doc = true;
-		pipe->limiter = argv[2];
+		pipe->limiter = ft_strjoin(argv[2], "\n");
 		pipe->input_file = NULL;
 		pipe->output_file = argv[argc - 1];
 	}

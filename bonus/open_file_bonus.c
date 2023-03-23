@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_pipe_bonus.c                                  :+:      :+:    :+:   */
+/*   open_file_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/23 17:38:49 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:57:04 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ static void	write_to_pipe_for_here_doc(int fd, const char *limiter)
 
 	line = NULL;
 	line = get_next_line(STDIN_FILENO);
-	while (line != NULL)
-	{
+	ft_printf("%s\n", limiter);
+	while (line)
+	{	
 		if (ft_strcmp(line, limiter) == EQUAL)
 		{
 			free(line);
@@ -37,7 +38,7 @@ static void	write_to_pipe_for_here_doc(int fd, const char *limiter)
 	exit(0);
 }
 
-static void	init_heardoc(t_pipe *t_pipe)
+static void	start_get_line(t_pipe *t_pipe)
 {
 	int		pipe_fds[2];
 	pid_t	pid;
@@ -76,7 +77,7 @@ void	open_file(t_pipe *pipe)
 {
 	init_pipe(pipe);
 	if (pipe->here_doc)
-		init_heardoc(pipe);
+		start_get_line(pipe);
 	else
 	{
 		pipe->input_fd = open(pipe->input_file, O_RDONLY);
