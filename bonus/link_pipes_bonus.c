@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 19:48:07 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/23 22:46:21 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 22:52:16 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ static void	dup2_and_check(int old_fd, int new_fd, const char *error_message)
 
 static void	link_receive_pipes(t_pipe *pipe, int index)
 {
-	if (index == 0 && pipe->here_doc == true)
-		printf("Calling hear_doc with input_fd: %d\n", pipe->input_fd);
 	if (index == 0)
 		dup2_and_check(pipe->input_fd, STDIN_FILENO, \
 			"Failed to duplicate pipe read end");
@@ -33,8 +31,10 @@ static void	link_receive_pipes(t_pipe *pipe, int index)
 static void	link_give_pipes(t_pipe *pipe, int index, int num_commands)
 {
 	if (index == num_commands - 1)
+	{
 		dup2_and_check(pipe->output_fd, STDOUT_FILENO, \
 			"Error duplicating file descriptor");
+	}
 	else
 		dup2_and_check(pipe->pipes[index * 2 + 1], STDOUT_FILENO, \
 			"Failed to duplicate pipe write end");

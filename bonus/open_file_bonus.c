@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/23 22:38:14 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 22:51:42 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	open_in_file(t_pipe *pipe)
 {
+	if (pipe->here_doc)
+		return ;
 	pipe->input_fd = open(pipe->input_file, O_RDONLY);
 	if (pipe->input_fd < 0)
 		perror_return("Failed to open input file", 1);
@@ -41,8 +43,6 @@ static void	heredoc_open_out_file(t_pipe *pipe)
 
 void	open_file(t_pipe *pipe)
 {
-	if (pipe->here_doc)
-		return ;
 	open_in_file(pipe);
 	open_out_file(pipe);
 	heredoc_open_out_file(pipe);
