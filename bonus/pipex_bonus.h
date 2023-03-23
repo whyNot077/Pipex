@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/23 19:48:39 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 22:09:47 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,6 @@ void	execute_pipeline(t_pipe *pipe, int index, char *envp[]);
 void	create_pipes_and_execute(t_pipe *pipe, char *envp[]);
 void	close_pipe(t_pipe *pipe);
 void	link_pipes(t_pipe *pipe, int index, int num_commands);
+void	hear_doc(t_pipe *t_pipe);
+
 #endif

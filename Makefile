@@ -6,7 +6,7 @@
 #    By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/23 19:52:40 by minkim3          ###   ########.fr        #
+#    Updated: 2023/03/23 22:05:23 by minkim3          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ B_SOURCES       = bonus/error_bonus.c\
 				  bonus/get_args_bonus.c\
 				  bonus/execute_pipeline_bonus.c\
 				  bonus/close_bonus.c\
-				  bonus/link_pipes.c
+				  bonus/link_pipes_bonus.c\
+				  bonus/heardoc_bonus.c
 B_SOURCES_H     = bonus/pipex_bonus.h
 B_OBJECTS       = $(B_SOURCES:.c=.o)
 B_EXEC          = pipex
