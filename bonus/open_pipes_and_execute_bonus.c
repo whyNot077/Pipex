@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_pipes_and_execute_bonus.c                   :+:      :+:    :+:   */
+/*   open_pipes_and_execute_bonus.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:36:08 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 22:08:17 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:37:03 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ static void	create_pipes(int *pipes, int num_commands)
 	}
 }
 
-void	create_pipes_and_execute(t_pipe *pipe, t_args *args, char *envp[])
+void	create_pipes_and_execute(t_pipe *pipe, char *envp[])
 {
 	int		index;
 	int		num_commands;
 	int		*pipes;
 
 	index = 0;
-	num_commands = args->num_commands;
+	num_commands = pipe->num_commands;
 	pipes = pipe->pipes;
 	create_pipes(pipes, num_commands);
 	while (index < num_commands)
 	{
-		execute_pipeline(pipe, args, index, envp);
+		execute_pipeline(pipe, index, envp);
 		index++;
 	}
 }

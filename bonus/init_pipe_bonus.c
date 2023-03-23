@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_pipe.c                                        :+:      :+:    :+:   */
+/*   init_pipe_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/23 13:28:15 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:38:49 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	write_to_pipe_for_here_doc(int fd, const char *limiter)
 	exit(0);
 }
 
-static void	init_heardoc(t_args *args, t_pipe *t_pipe)
+static void	init_heardoc(t_pipe *t_pipe)
 {
 	int		pipe_fds[2];
 	pid_t	pid;
@@ -50,7 +50,7 @@ static void	init_heardoc(t_args *args, t_pipe *t_pipe)
 	else if (pid == 0)
 	{
 		close(pipe_fds[0]);
-		write_to_pipe_for_here_doc(pipe_fds[1], args->limiter);
+		write_to_pipe_for_here_doc(pipe_fds[1], t_pipe->limiter);
 	}
 	else
 	{
@@ -60,44 +60,31 @@ static void	init_heardoc(t_args *args, t_pipe *t_pipe)
 	}
 }
 
-static void	args_to_pipe(t_args *args, t_pipe *pipe)
+static void	init_pipe(t_pipe *pipe)
 {
-	int		*pipes;
-
 	pipe->input_fd = -1;
 	pipe->output_fd = -1;
-	pipe->num_commands = args->num_commands;
-	pipe->commands = args->commands;
-	pipe->here_doc = args->here_doc;
-	pipe->limiter = args->limiter;
-	pipes = (int *)malloc(sizeof(int) * (args->num_commands - 1) * 2);
-	if (!pipes)
+	pipe->pipes = (int *)malloc(sizeof(int) * (pipe->num_commands - 1) * 2);
+	if (!pipe->pipes)
 		perror_return("Failed to allocate memory for pipes", 1);
-	pipe->pipes = pipes;
-	pipe->pid = (pid_t *)malloc(sizeof(pid_t) * args->num_commands);
+	pipe->pid = (pid_t *)malloc(sizeof(pid_t) * pipe->num_commands);
 	if (!pipe->pid)
 		perror_return("Failed to allocate memory for PIDs", 1);
 }
 
-t_pipe	*init_pipe(t_args *args)
+void	open_file(t_pipe *pipe)
 {
-	t_pipe	*pipe;
-
-	pipe = ft_calloc(1, sizeof(t_pipe));
-	if (!pipe)
-		perror_return("Failed to allocate memory for pipe", 1);
-	args_to_pipe(args, pipe);
-	if (args->here_doc)
-		init_heardoc(args, pipe);
+	init_pipe(pipe);
+	if (pipe->here_doc)
+		init_heardoc(pipe);
 	else
 	{
-		pipe->input_fd = open(args->input_file, O_RDONLY);
+		pipe->input_fd = open(pipe->input_file, O_RDONLY);
 		if (pipe->input_fd < 0)
 			perror_return("Failed to open input file", 1);
 	}
 	pipe->output_fd = \
-		open(args->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		open(pipe->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipe->output_fd < 0)
 		perror_return("Failed to open output file", 1);
-	return (pipe);
 }

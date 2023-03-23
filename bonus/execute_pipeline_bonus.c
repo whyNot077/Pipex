@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 20:53:25 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 21:00:04 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:36:02 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,19 @@ static char	**split_command_options(const char *command)
 	return (command_and_options);
 }
 
-static void	execute_command(t_pipe *pipe, t_args *args, int i, char *envp[])
+static void	execute_command(t_pipe *pipe, int i, char *envp[])
 {
 	char	*cmd_path;
 	char	**command_and_options;
 
-	command_and_options = split_command_options(args->commands[i]);
+	command_and_options = split_command_options(pipe->commands[i]);
 	cmd_path = get_accessible_path(pipe->path, command_and_options[0]);
 	execve(cmd_path, command_and_options, envp);
 	perror_return("Failed to execute command", 1);
 	exit(1);
 }
 
-void	execute_pipeline(t_pipe *pipe, \
-	t_args *args, int index, char *envp[])
+void	execute_pipeline(t_pipe *pipe, int index, char *envp[])
 {
 	pid_t	pid;
 
@@ -73,8 +72,8 @@ void	execute_pipeline(t_pipe *pipe, \
 		perror_return("Failed to fork child process", 1);
 	else if (pid == 0)
 	{
-		setup_and_close_child_pipes(pipe, index, args->num_commands);
-		execute_command(pipe, args, index, envp);
+		setup_and_close_child_pipes(pipe, index, pipe->num_commands);
+		execute_command(pipe, index, envp);
 		perror_return("Failed to execute command", 1);
 	}
 	else

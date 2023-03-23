@@ -6,76 +6,76 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 15:33:47 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 20:38:12 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:31:17 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-static void	count_commands(int argc, char *argv[], t_args *args)
+static void	count_commands(int argc, char *argv[], t_pipe *pipe)
 {
 	if (strcmp(argv[1], "here_doc") == EQUAL)
 	{
-		args->here_doc = true;
-		args->num_commands = argc - 5;
+		pipe->here_doc = true;
+		pipe->num_commands = argc - 5;
 	}
 	else
 	{
-		args->here_doc = false;
-		args->num_commands = argc - 3;
+		pipe->here_doc = false;
+		pipe->num_commands = argc - 3;
 	}
 }
 
-static void	get_command(t_args *args, char *argv[], int start_index, int argc)
+static void	get_command(t_pipe *pipe, char *argv[], int start_index, int argc)
 {
 	int	i;
 
-	count_commands(argc, argv, args);
-	args->commands = (char **)malloc(sizeof(char *) * (args->num_commands + 1));
-	if (!args->commands)
+	count_commands(argc, argv, pipe);
+	pipe->commands = (char **)malloc(sizeof(char *) * (pipe->num_commands + 1));
+	if (!pipe->commands)
 		perror_return("Failed to allocate memory for commands", 1);
 	i = 0;
-	while (i < args->num_commands)
+	while (i < pipe->num_commands)
 	{
-		args->commands[i] = argv[start_index + i];
+		pipe->commands[i] = argv[start_index + i];
 		i++;
 	}
-	args->commands[args->num_commands] = NULL;
+	pipe->commands[pipe->num_commands] = NULL;
 }
 
-static void	parse_arguments(t_args *args, int argc, char *argv[])
+static void	parse_arguments(t_pipe *pipe, int argc, char *argv[])
 {
 	if (ft_strcmp(argv[1], "here_doc") == EQUAL)
 	{
-		args->here_doc = true;
-		args->limiter = argv[2];
-		args->input_file = NULL;
-		args->output_file = argv[argc - 1];
+		pipe->here_doc = true;
+		pipe->limiter = argv[2];
+		pipe->input_file = NULL;
+		pipe->output_file = argv[argc - 1];
 	}
 	else
 	{
-		args->here_doc = false;
-		args->limiter = NULL;
-		args->input_file = argv[1];
-		args->output_file = argv[argc - 1];
+		pipe->here_doc = false;
+		pipe->limiter = NULL;
+		pipe->input_file = argv[1];
+		pipe->output_file = argv[argc - 1];
 	}
 }
 
-t_args	*get_args(int argc, char *argv[])
+t_pipe	*get_args(int argc, char *argv[])
 {
-	t_args	*args;
+	t_pipe	*pipe;
 	int		start_index;
 
 	if (argc < 5)
 		perror_return("Incorrect number of arguments", 1);
-	args = ft_calloc(1, sizeof(t_args));
-	if (!args)
+	pipe = ft_calloc(1, sizeof(t_pipe));
+	if (!pipe)
 		perror_return("Failed to allocate memory for arguments", 1);
-	parse_arguments(args, argc, argv);
-	if (args->here_doc)
+	parse_arguments(pipe, argc, argv);
+	if (pipe->here_doc)
 		start_index = 3;
 	else
 		start_index = 2;
-	get_command(args, argv, start_index, argc);
-	return (args);
+	get_command(pipe, argv, start_index, argc);
+	return (pipe);
 }
