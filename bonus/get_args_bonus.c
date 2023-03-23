@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 15:33:47 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/23 18:00:25 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 22:01:58 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	count_commands(int argc, char *argv[], t_pipe *pipe)
 	if (strcmp(argv[1], "here_doc") == EQUAL)
 	{
 		pipe->here_doc = true;
-		pipe->num_commands = argc - 5;
+		pipe->num_commands = argc - 4;
 	}
 	else
 	{
