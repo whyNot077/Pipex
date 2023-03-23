@@ -138,28 +138,50 @@ if (childPid == 0) {
 </div>
 </details>
 
-###
+## What is a Process?
+A process is an executing program with a unique process identifier (PID) assigned by the operating system when it is started. Each process has its own virtual memory space, including its allocated memory, stack and heap.  
+
+## What are IPC Mechanisms?
+
+Interprocess communication (IPC) mechanisms allow processes to communicate and share data with each other. Some common IPC mechanisms are pipes, message queues and shared memory. Pipes are a simple form of IPC that allow unidirectional data flows between two processes, where one process writes data to the pipe and the other reads from the pipe.  
+
+Processes can communicate with each other using IPC mechanisms such as pipes, message queues and shared memory. Pipes are a simple form of IPC that allow two processes to communicate via a unidirectional stream of data. One process writes data to the pipe and the other reads data from the pipe.   
+
+- Pipes: Unidirectional communication channels for transferring data between processes.    
+
+- Named pipes (FIFOs): Similar to pipes, but can be used between unrelated processes, identified by a name in the file system.  
+
+- Message queues: A method of exchanging messages between processes, managed by the operating system. Message queues facilitate the transmission of messages containing data to designated receivers.  
+
+- Shared memory: A region of memory that is accessible to multiple processes, allowing them to exchange data. Shared memory is an efficient alternative to pipes or message queues for exchanging data between processes.  
+
+- Semaphores: Synchronisation primitives that help coordinate activities between processes and protect shared resources from concurrent access by multiple processes.  
+
+- Sockets: Communication endpoints that allow data to be exchanged between processes over a network or within the same machine. Sockets are useful for implementing client-server and other network-based applications.  
+
+IPC mechanisms are essential for building complex systems involving multiple processes or threads. They allow processes to communicate and synchronise their activities, facilitating the development of efficient, reliable and scalable systems.  
+
+## How does a Pipe Work?  
+
+A pipe is an IPC mechanism that allows unidirectional data transfer between two processes. One process writes data to the pipe, while the other reads data from the pipe. In Unix-like systems, the pipe system call creates a pipe, and the read and write system calls handle the data transfer through the pipe.   
+
+Typically, a process creates a pipe using the fork system call, which spawns a new process. After the fork, the process uses the pipe() system call to create a new pipe and is given a pair of file descriptors. One file descriptor handles writing to the pipe, while the other handles reading from the pipe.  
+
+The parent process writes to the pipe using the write file descriptor and the child process reads from the pipe using the read file descriptor. This setup allows bi-directional communication between the two processes using the pipe.   
+
+Pipes are commonly used in shell scripting and other Unix-based systems to link two or more commands. This allows the output of one command to serve as the input for another, a technique known as pipeline processing, which allows complex data processing pipelines to be created with minimal effort.  
+
 ```c
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_pipe	*pipe;
 	t_args	*args;
-	int		i;
 
 	args = get_args(argc, argv);
 	pipe = init_pipe(args);
 	get_path(pipe, envp);
 	create_pipes_and_execute(pipe, args, envp);
-	
-	close_parent(pipe);
-	i = 0;
-	while (i < args->num_commands)
-	{
-		wait(NULL);
-		i++;
-	}
-	free_pipe(pipe);
-	free(args);
+	close_pipe(pipe, args);
 	return (0);
 }
 ```
