@@ -7,6 +7,33 @@
 open, close, read, write, malloc, free, perror, strerror, access, 
 dup, dup2, execve, exit, fork, pipe, unlink, wait, waitpid    
 
+- open () : The open() function is used in C programming language to open a file and get a file descriptor that can be used for reading, writing or both. The function takes two main arguments: the file name and a set of flags to specify the mode in which the file should be opened. Here are some of the commonly used options for the open() function:  
+
+	O_RDONLY: Opens the file in read-only mode.  
+	O_WRONLY: Opens the file in write-only mode.  
+	O_RDWR: Opens the file in read/write mode.  
+	O_CREAT: Creates the file if it does not exist.  
+	O_TRUNC: Truncates the file to zero length if it already exists.  
+	O_APPEND: Appends data to the end of the file.  
+	O_EXCL: Creates the file exclusively, meaning that if the file already exists, the open operation fails.  
+
+```c
+#include <fcntl.h>
+#include <stdio.h>
+
+int main() {
+    int fd = open("myfile.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    if (fd < 0) {
+        perror("open");
+        return 1;
+    }
+    // Do something with the file...
+    close(fd);
+    return 0;
+}
+```
+
+- 
 
 - perror(): This function is used to print an error message to the console.  
 ```c

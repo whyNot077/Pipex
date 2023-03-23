@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 13:30:30 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/23 18:04:41 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 19:31:13 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	free_pipe(t_pipe *pipe)
 	free(pipe);
 }
 
-static void wait_for_child_process(t_pipe *pipe)
+static void	wait_for_child_process(t_pipe *pipe)
 {
 	int	i;
 
