@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_and_close_bonus.c                             :+:      :+:    :+:   */
+/*   init_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 22:08:28 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/23 13:28:15 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,20 +100,4 @@ t_pipe	*init_pipe(t_args *args)
 	if (pipe->output_fd < 0)
 		perror_return("Failed to open output file", 1);
 	return (pipe);
-}
-
-void	close_parent(t_pipe *pipe)
-{
-	int	i;
-	int	num_pipes;
-
-	close(pipe->input_fd);
-	close(pipe->output_fd);
-	num_pipes = (pipe->num_commands - 1) * 2;
-	i = 0;
-	while (i < num_pipes)
-	{
-		close(pipe->pipes[i]);
-		i++;
-	}
 }

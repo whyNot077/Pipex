@@ -138,6 +138,28 @@ if (childPid == 0) {
 </div>
 </details>
 
-[tester][test]  
+###
+```c
+int	main(int argc, char *argv[], char *envp[])
+{
+	t_pipe	*pipe;
+	t_args	*args;
+	int		i;
 
-[test]: https://github.com/vfurmane/pipex-tester
+	args = get_args(argc, argv);
+	pipe = init_pipe(args);
+	get_path(pipe, envp);
+	create_pipes_and_execute(pipe, args, envp);
+	
+	close_parent(pipe);
+	i = 0;
+	while (i < args->num_commands)
+	{
+		wait(NULL);
+		i++;
+	}
+	free_pipe(pipe);
+	free(args);
+	return (0);
+}
+```
