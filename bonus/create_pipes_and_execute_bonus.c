@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   open_pipes_and_execute_bonus.c                     :+:      :+:    :+:   */
+/*   create_pipes_and_execute_bonus.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:36:08 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/23 17:37:03 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/24 14:37:40 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	create_pipes_and_execute(t_pipe *pipe, char *envp[])
 
 	index = 0;
 	num_commands = pipe->num_commands;
-	pipes = pipe->pipes;
+	pipes = pipe->pipe_fd;
 	create_pipes(pipes, num_commands);
 	while (index < num_commands)
 	{

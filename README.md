@@ -33,8 +33,6 @@ int main() {
 }
 ```
 
-- 
-
 - perror(): This function is used to print an error message to the console.  
 ```c
 perror("Error message");
@@ -198,17 +196,161 @@ The parent process writes to the pipe using the write file descriptor and the ch
 
 Pipes are commonly used in shell scripting and other Unix-based systems to link two or more commands. This allows the output of one command to serve as the input for another, a technique known as pipeline processing, which allows complex data processing pipelines to be created with minimal effort.  
 
+## Code
+### Header and main
+```c
+typedef struct s_pipe
+{
+	char	*input_file;
+	char	*output_file;
+	int		input_fd;
+	int		output_fd;
+	int		*pipes;
+	pid_t	*pid;
+	char	**path;
+	char	**commands;
+	int		num_commands;
+	bool	here_doc;
+	char	*limiter;
+}	t_pipe;
+```
+The pid_t data type is used to store process IDs. The pid is used to store the process IDs of the child processes created by the fork() system call when the commands are executed in a pipeline.  
+
 ```c
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_pipe	*pipe;
-	t_args	*args;
 
-	args = get_args(argc, argv);
-	pipe = init_pipe(args);
+	pipe = get_args(argc, argv);
+	open_file(pipe);
+	here_doc(pipe);
 	get_path(pipe, envp);
-	create_pipes_and_execute(pipe, args, envp);
-	close_pipe(pipe, args);
+	create_pipes_and_execute(pipe, envp);
+	close_pipe(pipe);
 	return (0);
+}
+```
+
+## major functions
+### here_doc
+```c
+void	here_doc(t_pipe *t_pipe)
+{
+	char	*line;
+	int		pipe_fds[2];
+
+	if (pipe(pipe_fds) == -1)
+		perror_return("Failed to create pipe for here_doc", 1);
+	line = NULL;
+	while (1)
+	{
+		line = get_next_line(STDIN_FILENO);
+		if (line == NULL)
+			perror_return("Failed to read from stdin for here_doc", 1);
+		if (ft_strcmp(line, t_pipe->limiter) == EQUAL)
+		{
+			free(line);
+			break ;
+		}
+		if (write(pipe_fds[1], line, ft_strlen(line)) == -1)
+		{
+			free(line);
+			perror_return("Failed to write to pipe for here_doc", 1);
+		}
+		free(line);
+	}
+	close(pipe_fds[1]);
+	t_pipe->input_fd = pipe_fds[0];
+}
+```
+
+### create pipes
+```c
+static void	create_pipes(int *pipes, int num_commands)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_commands - 1)
+	{
+		if (pipe(pipes + i * 2) == -1)
+			perror_return("Failed to create pipe", 1);
+		i++;
+	}
+}
+```
+
+### execute
+```c
+void	execute_pipeline(t_pipe *pipe, int index, char *envp[])
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		perror_return("Failed to fork child process", 1);
+	else if (pid == 0)
+	{
+		link_pipes(pipe, index, pipe->num_commands);
+		execute_command(pipe, index, envp);
+		perror_return("Failed to execute command", 1);
+	}
+	else
+		pipe->pid[index] = pid;
+}
+```
+
+### link pipes
+```c
+static void	link_receive_pipes(t_pipe *pipe, int index)
+{
+	if (index == 0)
+		dup2_and_check(pipe->input_fd, STDIN_FILENO, \
+			"Failed to duplicate pipe read end");
+	if (pipe->here_doc == true)
+		close(pipe->input_fd);
+	else
+	{
+		dup2_and_check(pipe->pipe_fd[(index - 1) * 2], STDIN_FILENO, \
+			"Failed to duplicate pipe read end");
+		close(pipe->pipe_fd[(index - 1) * 2]);
+	}
+}
+
+static void	link_give_pipes(t_pipe *pipe, int index, int num_commands)
+{
+	if (index == num_commands - 1)
+	{
+		dup2_and_check(pipe->output_fd, STDOUT_FILENO, \
+			"Error duplicating file descriptor");
+	}
+	else
+	{
+		dup2_and_check(pipe->pipe_fd[index * 2 + 1], STDOUT_FILENO, \
+			"Failed to duplicate pipe write end");
+		close(pipe->pipe_fd[index * 2 + 1]);
+	}
+}
+
+static void	close_unused_pipes(t_pipe *pipe, int num_commands)
+{
+	int	j;
+
+	j = 0;
+	while (j < (num_commands - 1) * 2)
+	{
+		close(pipe->pipe_fd[j]);
+		j++;
+	}
+}
+
+void	link_pipes(t_pipe *pipe, int index, int num_commands)
+{
+	int	j;
+
+	j = 0;
+	link_receive_pipes(pipe, index);
+	link_give_pipes(pipe, index, num_commands);
+	close_unused_pipes(pipe, num_commands);
 }
 ```
