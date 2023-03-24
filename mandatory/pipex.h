@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/22 13:37:20 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/24 14:17:34 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct s_args
 	char	*first_command;
 	char	*second_command;
 	char	*output_file;
-	char	*hear_doc;
 }	t_args;
 
 typedef struct s_pipe
