@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/24 15:40:55 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/24 16:39:32 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ enum e_definition
 	ERROR = -1,
 	EQUAL = 0,
 	SUCCESS = 0,
+	FIN = 1,
 };
 
 typedef struct s_pipe
