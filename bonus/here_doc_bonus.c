@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 22:06:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/24 16:28:05 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/24 16:36:26 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	here_doc(t_pipe *t_pipe)
 {
-    char *line;
-    int pipe_fds[2];
+	char	*line;
+	int		pipe_fds[2];
 
 	if (t_pipe->here_doc == false)
 		return ;
-    if (pipe(pipe_fds) == -1)
-        perror_return("Failed to create pipe for here_doc", 1);
+	if (pipe(pipe_fds) == -1)
+		perror_return("Failed to create pipe for here_doc", 1);
 	line = NULL;
 	while (1)
 	{
@@ -40,6 +40,6 @@ void	here_doc(t_pipe *t_pipe)
 		}
 		free(line);
 	}
-    close(pipe_fds[1]);
-    t_pipe->input_fd = pipe_fds[0];
+	close(pipe_fds[1]);
+	t_pipe->input_fd = pipe_fds[0];
 }

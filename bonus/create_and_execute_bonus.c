@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:36:08 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/24 16:25:36 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/24 16:36:49 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	create_pipes(t_pipe *t_pipe, int index)
 {
-	int pipe_fds[2];
+	int	pipe_fds[2];
 
 	if (pipe(pipe_fds) == -1)
 		perror_return("Failed to create pipe", 1);
