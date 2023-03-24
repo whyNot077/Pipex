@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/24 14:20:44 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/24 15:40:55 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_pipe
 	char	*output_file;
 	int		input_fd;
 	int		output_fd;
-	int		*pipe_fd;
+	int		**pipes;
 	pid_t	*pid;
 	char	**path;
 	char	**commands;

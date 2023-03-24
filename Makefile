@@ -6,7 +6,7 @@
 #    By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/23 22:40:56 by minkim3          ###   ########.fr        #
+#    Updated: 2023/03/24 15:34:10 by minkim3          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ S_EXEC          = pipex
 
 B_SOURCES       = bonus/error_bonus.c\
                   bonus/get_path_bonus.c\
-                  bonus/create_pipes_and_execute_bonus.c\
+                  bonus/create_and_execute_bonus.c\
                   bonus/open_file_bonus.c\
                   bonus/pipex_bonus.c\
 				  bonus/get_args_bonus.c\
