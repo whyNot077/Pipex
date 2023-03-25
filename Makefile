@@ -6,12 +6,12 @@
 #    By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/25 20:38:58 by minkim3          ###   ########.fr        #
+#    Updated: 2023/03/25 20:40:45 by minkim3          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC              = cc
-CFLAGS          = -Wall -Wextra -Werror -MMD -fsanitize=address
+CFLAGS          = -Wall -Wextra -Werror -MMD
 NAME            = pipex.a
 AR              = ar -rcs
 RM              = rm -f

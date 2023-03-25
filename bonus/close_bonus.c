@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 13:30:30 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/25 20:31:24 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/25 20:43:45 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	free_pipe(t_pipe *pipe)
 		free(pipe->pid);
 	}
 	free(pipe->limiter);
-	free(pipe->pid);
 	free(pipe);
 }
 
