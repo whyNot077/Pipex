@@ -6,12 +6,12 @@
 #    By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/25 19:51:15 by minkim3          ###   ########.fr        #
+#    Updated: 2023/03/25 20:38:58 by minkim3          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC              = cc
-CFLAGS          = -Wall -Wextra -Werror -MMD
+CFLAGS          = -Wall -Wextra -Werror -MMD -fsanitize=address
 NAME            = pipex.a
 AR              = ar -rcs
 RM              = rm -f
@@ -35,7 +35,8 @@ B_SOURCES       = bonus/error_bonus.c\
 				  bonus/execute_pipeline_bonus.c\
 				  bonus/close_bonus.c\
 				  bonus/link_pipes_bonus.c\
-				  bonus/here_doc_bonus.c
+				  bonus/here_doc_bonus.c\
+				  bonus/init_pipe_bonus.c
 B_SOURCES_H     = bonus/pipex_bonus.h
 B_OBJECTS       = $(B_SOURCES:.c=.o)
 B_EXEC          = pipex

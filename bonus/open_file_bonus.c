@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:52:16 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/25 20:04:01 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/25 20:10:19 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	open_in_file(t_pipe *pipe)
 	if (pipe->input_fd < 0)
 		perror_return("Failed to open input file", 1);
 }
-
 
 void	heredoc_open_out_file(t_pipe *pipe)
 {
