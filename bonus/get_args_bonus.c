@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 15:33:47 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/25 19:52:59 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/25 19:55:18 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static void	get_command(t_pipe *pipe, char *argv[], int start_index, int argc)
 	int	i;
 
 	count_commands(argc, argv, pipe);
+	if (pipe->num_commands == 0)
+		return ;
 	pipe->commands = (char **)malloc(sizeof(char *) * (pipe->num_commands + 1));
 	if (!pipe->commands)
 		perror_return("Failed to allocate memory for commands", 1);
@@ -68,6 +70,8 @@ static void	init_pipe(t_pipe *pipe)
 	pipe->input_fd = -1;
 	pipe->output_fd = -1;
 	pipe->pipes = (int **)malloc(sizeof(int *) * (pipe->num_commands - 1));
+	if (pipe->num_commands == 0)
+		return ;
 	if (!pipe->pipes)
 		perror_return("Failed to allocate memory for pipes", 1);
 	pipe->pid = (pid_t *)malloc(sizeof(pid_t) * pipe->num_commands);

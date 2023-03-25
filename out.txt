@@ -1,11 +1,3 @@
-Makefile
-README.md
-bonus
-file
-libft
-mandatory
-out
-out.txt
-pipex
-test
-txt1.txt
+/Users/minkim3/Desktop/pipex
+/Users/minkim3/Desktop/pipex
+/Users/minkim3/Desktop/pipex
