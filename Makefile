@@ -6,7 +6,7 @@
 #    By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/26 02:37:28 by minjukim         ###   ########.fr        #
+#    Updated: 2023/03/26 02:40:09 by minjukim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ B_OBJECTS       = $(B_SOURCES:.c=.o)
 B_EXEC          = pipex
 
 ifdef WITH_BONUS
-	OBJECTS = $(B_OBJECTS) $(LIBFT)
+	OBJECTS = $(B_OBJECTS)
 	HEADER = $(B_HEADER)
 	EXEC = $(B_EXEC)
 else
