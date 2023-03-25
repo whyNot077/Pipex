@@ -6,7 +6,7 @@
 #    By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/26 02:20:02 by minjukim         ###   ########.fr        #
+#    Updated: 2023/03/26 02:21:40 by minjukim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ all:
 
 $(NAME): $(OBJECTS)
 	@$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -o $(EXEC)
-	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
+	@echo -e "$(GREEN)$(EXEC) created!$(DEFAULT)"
 
 %.o: %.c $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
