@@ -6,7 +6,7 @@
 #    By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/26 02:21:40 by minjukim         ###   ########.fr        #
+#    Updated: 2023/03/26 02:37:28 by minjukim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,12 +62,15 @@ all:
 	@make lib
 	@make $(NAME)
 
+bonus:
+	@make WITH_BONUS=1 all
+
 $(NAME): $(OBJECTS)
 	@$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -o $(EXEC)
 	@echo -e "$(GREEN)$(EXEC) created!$(DEFAULT)"
 
 %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 lib:
 	@make -C libft
@@ -85,15 +88,12 @@ clean:
 
 fclean: clean
 	@$(RM) $(S_EXEC) $(B_EXEC)
-	make fclean -C libft
+	@make fclean -C libft
 	@echo -e "$(PINK)all deleted!$(DEFAULT)"
 
 re:
-	make fclean
-	make all
-
-bonus:
-	@make WITH_BONUS=1 all
+	@make fclean
+	@make all
 
 .PHONY: all lib clean norm fclean re bonus
 
