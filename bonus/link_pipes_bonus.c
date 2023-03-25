@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 19:48:07 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/24 16:26:13 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/25 20:04:19 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	link_receive_pipes(t_pipe *pipe, int index)
 {
 	if (index == 0)
 	{
+		open_in_file(pipe);
 		dup2_and_check(pipe->input_fd, STDIN_FILENO, \
 			"Failed to duplicate pipe read end");
 	}
@@ -36,6 +37,7 @@ static void	link_give_pipes(t_pipe *pipe, int index, int num_commands)
 {
 	if (index == num_commands - 1)
 	{
+		open_out_file(pipe);
 		dup2_and_check(pipe->output_fd, STDOUT_FILENO, \
 			"Error duplicating file descriptor");
 	}

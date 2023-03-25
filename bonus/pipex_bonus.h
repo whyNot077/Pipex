@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:50:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/24 16:39:32 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/25 19:58:39 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	perror_return(const char *message, int status);
 void	get_path(t_pipe *pipe, char *envp[]);
 t_pipe	*get_args(int argc, char *argv[]);
 char	*get_accessible_path(char **paths, char *command);
-void	open_file(t_pipe *pipe);
+void	open_in_file(t_pipe *pipe);
+void	open_out_file(t_pipe *pipe);
 void	execute_pipeline(t_pipe *pipe, int index, char *envp[]);
 void	create_pipes_and_execute(t_pipe *pipe, char *envp[]);
 void	close_pipe(t_pipe *pipe);

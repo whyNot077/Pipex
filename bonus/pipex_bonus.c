@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 20:57:57 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/25 19:51:51 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/25 20:04:06 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	main(int argc, char *argv[], char *envp[])
 	t_pipe	*pipe;
 
 	pipe = get_args(argc, argv);
-	open_file(pipe);
 	here_doc(pipe);
 	get_path(pipe, envp);
 	create_pipes_and_execute(pipe, envp);
