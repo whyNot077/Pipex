@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 15:33:47 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/24 15:50:01 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/25 19:52:59 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static void	parse_arguments(t_pipe *pipe, int argc, char *argv[])
 	{
 		pipe->here_doc = true;
 		pipe->limiter = ft_strjoin(argv[2], "\n");
+		if (!pipe->limiter)
+			perror_return("Failed to allocate memory for limiter", 1);
 		pipe->input_file = NULL;
 		pipe->output_file = argv[argc - 1];
 	}
@@ -78,7 +80,7 @@ t_pipe	*get_args(int argc, char *argv[])
 	t_pipe	*pipe;
 	int		start_index;
 
-	if (argc < 5)
+	if (argc < 4)
 		perror_return("Incorrect number of arguments", 1);
 	pipe = ft_calloc(1, sizeof(t_pipe));
 	if (!pipe)
