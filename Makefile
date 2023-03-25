@@ -6,13 +6,13 @@
 #    By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/25 20:45:11 by minkim3          ###   ########.fr        #
+#    Updated: 2023/03/25 21:48:31 by minkim3          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC              = cc
 CFLAGS          = -Wall -Wextra -Werror -MMD -fsanitize=address
-NAME            = pipex.a
+NAME            = pipex
 AR              = ar -rcs
 RM              = rm -f
 LIBFT           = libft/libft.a
@@ -43,38 +43,40 @@ B_EXEC          = pipex
 
 ifdef WITH_BONUS
 	OBJECTS = $(B_OBJECTS)
-	HEADER := $(B_SOURCES_H)
+	HEADER = $(B_SOURCES_H)
+	EXEC = $(B_EXEC)
 else
 	OBJECTS = $(S_OBJECTS)
-	HEADER := $(SOURCES_H)
+	HEADER = $(SOURCES_H)
+	EXEC = $(S_EXEC)
 endif
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -o $(S_EXEC)
-
-bonus: $(B_OBJECTS) $(LIBFT)
-	$(CC) $(CFLAGS) $(B_OBJECTS) $(LIBFT) -o $(B_EXEC)
+$(NAME): $(OBJECTS) lib
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -o $(EXEC)
 
 %.o : %.c $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LIBFT):
-	make -C libft
+lib:
+	@make -C libft
 
 clean:
-	$(RM) $(S_OBJECTS) $(S_OBJECTS:.o=.d) $(B_OBJECTS) $(B_OBJECTS:.o=.d)
+	$(RM) $(B_OBJECTS) $(B_OBJECTS:.o=.d) $(S_OBJECTS) $(S_OBJECTS:.o=.d)
 	make clean -C libft
 
 fclean: clean
-	$(RM) $(NAME) $(S_EXEC) $(B_EXEC)
+	$(RM) $(NAME) $(EXEC)
 	make fclean -C libft
 
 re:
 	make fclean
 	make all
 
+bonus: 
+	@make WITH_BONUS=1 all
+
 .PHONY: all lib clean fclean re bonus
 
--include $(OBJECTS:.o=.d) $(B_OBJECTS:.o=.d)
+-include $(OBJECTS:.o=.d)
