@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   link_pipes_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 19:48:07 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/26 14:47:13 by minjukim         ###   ########.fr       */
+/*   Updated: 2023/03/26 18:24:22 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	link_give_pipes(t_pipe *pipe, int index, int num_commands)
 	}
 }
 
-static void	close_unused_pipes(t_pipe *pipe, int num_commands)
+static void	close_all_pipes(t_pipe *pipe, int num_commands)
 {
 	int	j;
 
@@ -65,5 +65,5 @@ void	link_pipes(t_pipe *pipe, int index, int num_commands)
 {
 	link_receive_pipes(pipe, index);
 	link_give_pipes(pipe, index, num_commands);
-	close_unused_pipes(pipe, num_commands);
+	close_all_pipes(pipe, num_commands);
 }
