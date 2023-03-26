@@ -6,7 +6,7 @@
 #    By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/26 02:40:09 by minjukim         ###   ########.fr        #
+#    Updated: 2023/03/26 10:50:29 by minjukim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,9 @@ CC              = cc
 CFLAGS          = -Wall -Wextra -Werror -MMD -fsanitize=address
 NAME            = pipex
 RM              = rm -f
-LIBFT           = libft/libft.a
+P_LIBFT			= libft/
+A_LIBFT         = libft.a
+LIBFT			= $(addprefix $(P_LIBFT), $(A_LIBFT))
 
 S_PATH		= mandatory/
 SRCS         = error.c \
@@ -73,7 +75,9 @@ $(NAME): $(OBJECTS)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 lib:
-	@make -C libft
+	@if [ ! -f $(LIBFT) ]; then \
+		make -C $(P_LIBFT); \
+	fi
 
 norm:
 	norminette -R CheckDefine
@@ -83,12 +87,12 @@ clean:
 	$(RM) $(B_OBJECTS:.o=.d)
 	$(RM) $(S_OBJECTS)
 	$(RM) $(S_OBJECTS:.o=.d)
-	@make clean -C libft
+	@make clean -C $(P_LIBFT)
 	@echo -e "$(YELLOW)object files deleted!$(DEFAULT)"
 
 fclean: clean
 	@$(RM) $(S_EXEC) $(B_EXEC)
-	@make fclean -C libft
+	@make fclean -C $(P_LIBFT)
 	@echo -e "$(PINK)all deleted!$(DEFAULT)"
 
 re:
