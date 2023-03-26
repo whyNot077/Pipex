@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_path_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
+/*   By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:39:28 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/25 20:19:09 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/26 14:47:22 by minjukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../pipex_bonus.h"
 
 static char	*find_path(char *envp[])
 {

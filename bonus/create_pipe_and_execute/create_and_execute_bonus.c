@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   create_and_execute_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
+/*   By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:36:08 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/24 16:36:49 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/26 14:47:09 by minjukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../pipex_bonus.h"
 
 static void	create_pipes(t_pipe *t_pipe, int index)
 {

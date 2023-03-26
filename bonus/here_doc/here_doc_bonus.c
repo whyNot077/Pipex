@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
+/*   By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 22:06:04 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/24 16:39:51 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/26 14:47:25 by minjukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../pipex_bonus.h"
 
 static int	get_line_heardoc(t_pipe *t_pipe, int pipe_fd)
 {

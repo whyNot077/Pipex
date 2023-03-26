@@ -6,7 +6,7 @@
 #    By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/26 13:33:36 by minjukim          #+#    #+#              #
-#    Updated: 2023/03/26 14:01:47 by minjukim         ###   ########.fr        #
+#    Updated: 2023/03/26 14:56:25 by minjukim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,17 +19,17 @@ A_LIBFT         = libft.a
 LIBFT			= $(addprefix $(P_LIBFT), $(A_LIBFT))
 
 EXEC            = pipex
-SOURCES			= error_bonus.c \
-                  get_path_bonus.c \
-                  create_and_execute_bonus.c \
-                  open_file_bonus.c \
-                  pipex_bonus.c \
-                  get_args_bonus.c \
-                  execute_pipeline_bonus.c \
-                  close_bonus.c \
-                  link_pipes_bonus.c \
-                  here_doc_bonus.c \
-                  init_pipe_bonus.c
+SOURCES			= pipex_bonus.c \
+				  close/error_bonus.c \
+				  close/close_bonus.c \
+				  create_pipe_and_execute/create_and_execute_bonus.c \
+				  create_pipe_and_execute/open_file_bonus.c \
+				  create_pipe_and_execute/link_pipes_bonus.c \
+				  create_pipe_and_execute/execute_pipeline_bonus.c \
+                  get_args/get_args_bonus.c \
+				  get_path/get_path_bonus.c \
+				  here_doc/here_doc_bonus.c \
+				  init_pipe/init_pipe_bonus.c
 OBJECTS         = $(SOURCES:.c=.o)
 
 HEADER  	    = pipex_bonus.h

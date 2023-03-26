@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_pipe_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
+/*   By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 17:10:19 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/25 20:40:16 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/03/26 14:47:27 by minjukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../pipex_bonus.h"
 
 static int	heardoc_has_no_command(t_pipe *pipe)
 {

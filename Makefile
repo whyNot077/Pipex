@@ -6,13 +6,12 @@
 #    By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/26 14:08:32 by minjukim         ###   ########.fr        #
+#    Updated: 2023/03/26 14:57:43 by minjukim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 MANDATORY		= mandatory
 BONUS      	    = bonus
-MAKE_C			= make -C
 RM              = rm -f
 CP				= cp -f
 NAME			= pipex
@@ -20,13 +19,13 @@ EXEC			= $(MANDATORY)/$(NAME)
 EXEC_BONUS		= $(BONUS)/$(NAME)
 
 all: 
-	@$(MAKE_C) $(MANDATORY)
+	@make -C $(MANDATORY)
 	@$(RM) $(NAME)
 	@$(CP) $(MANDATORY)/$(NAME) $(NAME)
 	@echo -e "$(BLUE)copied!$(DEFAULT)"
 
 bonus:
-	@$(MAKE_C) $(BONUS)
+	@make -C $(BONUS)
 	@$(CP) $(BONUS)/$(NAME) $(NAME)
 	@echo -e "$(BLUE)copied!$(DEFAULT)"
 
