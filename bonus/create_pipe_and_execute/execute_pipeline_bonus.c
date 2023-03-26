@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 20:53:25 by minkim3           #+#    #+#             */
-/*   Updated: 2023/03/26 14:47:11 by minjukim         ###   ########.fr       */
+/*   Updated: 2023/03/26 18:47:32 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void	execute_command(t_pipe *pipe, int i, char *envp[])
 		cmd_path = get_accessible_path(pipe->path, command_and_options[0]);
 	execve(cmd_path, command_and_options, envp);
 	perror_return("Failed to execute command", 1);
-	exit(1);
 }
 
 void	execute_pipeline(t_pipe *pipe, int index, char *envp[])
@@ -46,7 +45,6 @@ void	execute_pipeline(t_pipe *pipe, int index, char *envp[])
 	{
 		link_pipes(pipe, index, pipe->num_commands);
 		execute_command(pipe, index, envp);
-		perror_return("Failed to execute command", 1);
 	}
 	else
 		pipe->pid[index] = pid;
