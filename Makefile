@@ -6,7 +6,7 @@
 #    By: minjukim <minjukim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 15:47:31 by minkim3           #+#    #+#              #
-#    Updated: 2023/03/26 10:50:29 by minjukim         ###   ########.fr        #
+#    Updated: 2023/03/26 13:20:49 by minjukim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,19 +18,20 @@ P_LIBFT			= libft/
 A_LIBFT         = libft.a
 LIBFT			= $(addprefix $(P_LIBFT), $(A_LIBFT))
 
-S_PATH		= mandatory/
-SRCS         = error.c \
+S_EXEC          = pipex
+S_PATH			= mandatory/
+SRCS   	        = error.c \
                   get_path.c \
                   fork_child.c \
                   init_and_close.c \
                   pipex.c
 SOURCES			= $(addprefix $(S_PATH), $(SRCS))
+S_OBJECTS       = $(SOURCES:.c=.o)
 
 SOURCES_H       = pipex.h
 S_HEADER		= $(addprefix $(S_PATH), $(SOURCES_H))
-S_OBJECTS       = $(SOURCES:.c=.o)
-S_EXEC          = pipex
 
+B_EXEC          = pipex
 B_PATH			= bonus/
 B_SRCS			= error_bonus.c \
                   get_path_bonus.c \
@@ -44,11 +45,10 @@ B_SRCS			= error_bonus.c \
                   here_doc_bonus.c \
                   init_pipe_bonus.c
 B_SOURCES		= $(addprefix $(B_PATH), $(B_SRCS))
+B_OBJECTS       = $(B_SOURCES:.c=.o)
 
 B_SOURCES_H     = pipex_bonus.h
-B_HEADER		= $(addprefix $(S_PATH), $(B_SOURCES_H))
-B_OBJECTS       = $(B_SOURCES:.c=.o)
-B_EXEC          = pipex
+B_HEADER		= $(addprefix $(B_PATH), $(B_SOURCES_H))
 
 ifdef WITH_BONUS
 	OBJECTS = $(B_OBJECTS)
