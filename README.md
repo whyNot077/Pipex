@@ -316,7 +316,7 @@ void	create_pipes_and_execute(t_pipe *pipe, char *envp[])
 I've created a pipes variable within a structure to store the file descriptors (fd) of pipes: int **pipes;.  
 However, an alternative approach is to open pipes at each stage of execution, eliminating the need for the pipes variable in the structure. Here's an simple example made by chat GPT. 
 <details>
-<summary>Alternative Method</summary>
+<summary>**Alternative Method**</summary>
 <div markdown="1">
 
 ```c
@@ -365,6 +365,63 @@ int main() {
 ```
 </div>
 </details>
+
+<details>
+<summary>**Extends to Multiple childs**</summary>
+<div markdown="1">
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+#define NUM_CHILDREN 3
+
+int main() {
+    int pipe_fd[2];
+    pid_t child_pid;
+    char buffer[1024];
+
+    // create the pipe
+    if (pipe(pipe_fd) < 0) {
+        perror("pipe");
+        exit(1);
+    }
+
+    for (int i = 0; i < NUM_CHILDREN; i++) {
+        // fork the process
+        child_pid = fork();
+
+        if (child_pid == -1) {
+            perror("fork");
+            exit(1);
+        } else if (child_pid == 0) {
+            // child process
+            close(pipe_fd[0]); // close the read end of the pipe
+            dup2(pipe_fd[1], STDOUT_FILENO); // redirect stdout to the pipe
+            close(pipe_fd[1]); // close the original write end of the pipe
+            printf("Hello from child process %d!\n", i + 1);
+            exit(0);
+        } else {
+            // parent process
+            close(pipe_fd[1]); // close the write end of the pipe
+            read(pipe_fd[0], buffer, sizeof(buffer));
+            printf("Received message from child %d: %s", i + 1, buffer);
+            close(pipe_fd[0]); // close the read end of the pipe
+            pipe(pipe_fd); // reopen the pipe for the next child
+
+            // wait for the child process to terminate
+            wait(NULL);
+        }
+    }
+
+    return 0;
+}
+```
+</div>
+</details>
+
 
 ### execute
 ```c
