@@ -316,7 +316,7 @@ void	create_pipes_and_execute(t_pipe *pipe, char *envp[])
 I've created a pipes variable within a structure to store the file descriptors (fd) of pipes: int **pipes;.  
 However, an alternative approach is to open pipes at each stage of execution, eliminating the need for the pipes variable in the structure. Here's an simple example made by chat GPT. 
 <details>
-<summary>**Alternative Method**</summary>
+<summary>Alternative Method</summary>
 <div markdown="1">
 
 ```c
@@ -367,7 +367,7 @@ int main() {
 </details>
 
 <details>
-<summary> **Extends to Multiple childs** </summary>
+<summary>Extends to Multiple childs</summary>
 <div markdown="1">
 
 ```c
