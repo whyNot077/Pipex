@@ -234,11 +234,234 @@ int	main(int argc, char *argv[], char *envp[])
 ## major functions
 ### here_doc
 
+I've created a solution that uses pipes to link processes in heardoc, while many peers opt for creating temporary text files. When heardoc operates within the shell, it calculates the data volume. If the volume is small, the data is transferred using pipes. Conversely, if the volume is large, temporary files are used to transfer the data.
+
+```c
+static int	get_line_heardoc(t_pipe *t_pipe, int pipe_fd)
+{
+	char	*line;
+
+	line = NULL;
+	write(1, "heredoc> ", 9);
+	line = get_next_line(STDIN_FILENO);
+	if (line == NULL)
+		perror_return("Failed to read from stdin for here_doc", 1);
+	if (ft_strcmp(line, t_pipe->limiter) == EQUAL)
+	{
+		free(line);
+		return (FIN);
+	}
+	if (write(pipe_fd, line, ft_strlen(line)) == -1)
+	{
+		free(line);
+		perror_return("Failed to write to pipe for here_doc", 1);
+	}
+	free(line);
+	return (0);
+}
+
+void	here_doc(t_pipe *t_pipe)
+{
+	int		pipe_fds[2];
+
+	if (t_pipe->here_doc == false)
+		return ;
+	if (pipe(pipe_fds) == -1)
+		perror_return("Failed to create pipe for here_doc", 1);
+	while (1)
+	{
+		if (get_line_heardoc(t_pipe, pipe_fds[1]) == FIN)
+			break ;
+	}
+	close(pipe_fds[1]);
+	t_pipe->input_fd = pipe_fds[0];
+}
+```
 
 ### create pipes
+```c
+static void	create_pipes(t_pipe *t_pipe, int index)
+{
+	int	pipe_fds[2];
 
+	if (pipe(pipe_fds) == -1)
+		perror_return("Failed to create pipe", 1);
+	t_pipe->pipes[index] = malloc(2 * sizeof(int));
+	if (t_pipe->pipes[index] == NULL)
+		perror_return("Failed to allocate memory for pipes", 1);
+	t_pipe->pipes[index][0] = pipe_fds[0];
+	t_pipe->pipes[index][1] = pipe_fds[1];
+}
+
+void	create_pipes_and_execute(t_pipe *pipe, char *envp[])
+{
+	int		index;
+	int		num_commands;
+
+	index = 0;
+	num_commands = pipe->num_commands;
+	while (index < num_commands - 1)
+	{
+		create_pipes(pipe, index);
+		index++;
+	}
+	index = 0;
+	while (index < num_commands)
+	{
+		execute_pipeline(pipe, index, envp);
+		index++;
+	}
+}
+```
+I've created a pipes variable within a structure to store the file descriptors (fd) of pipes: int **pipes;.  
+However, an alternative approach is to open pipes at each stage of execution, eliminating the need for the pipes variable in the structure. Here's an simple example made by chat GPT. 
+<details>
+<summary>Alternative Method</summary>
+<div markdown="1">
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+int main() {
+    int pipe_fd[2];
+    pid_t child_pid;
+    char buffer[1024];
+
+    // create the pipe
+    if (pipe(pipe_fd) < 0) {
+        perror("pipe");
+        exit(1);
+    }
+
+    // fork the process
+    child_pid = fork();
+
+    if (child_pid == -1) {
+        perror("fork");
+        exit(1);
+    } else if (child_pid == 0) {
+        // child process
+        close(pipe_fd[0]); // close the read end of the pipe
+        dup2(pipe_fd[1], STDOUT_FILENO); // redirect stdout to the pipe
+        close(pipe_fd[1]); // close the original write end of the pipe
+        printf("Hello from the child process!\n");
+        exit(0);
+    } else {
+        // parent process
+        close(pipe_fd[1]); // close the write end of the pipe
+        read(pipe_fd[0], buffer, sizeof(buffer));
+        printf("Received message from child: %s", buffer);
+        close(pipe_fd[0]); // close the read end of the pipe
+
+        // wait for the child process to terminate
+        wait(NULL);
+    }
+
+    return 0;
+}
+```
+</div>
+</details>
 
 ### execute
+```c
+static char	**split_command_options(const char *command)
+{
+	char	**command_and_options;
 
+	command_and_options = ft_split(command, ' ');
+	return (command_and_options);
+}
+
+static void	execute_command(t_pipe *pipe, int i, char *envp[])
+{
+	char	*cmd_path;
+	char	**command_and_options;
+
+	command_and_options = split_command_options(pipe->commands[i]);
+	if (access(pipe->commands[i], F_OK) == SUCCESS)
+		cmd_path = ft_strdup(pipe->commands[i]);
+	else
+		cmd_path = get_accessible_path(pipe->path, command_and_options[0]);
+	execve(cmd_path, command_and_options, envp);
+	perror_return("Failed to execute command", 1);
+}
+
+void	execute_pipeline(t_pipe *pipe, int index, char *envp[])
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		perror_return("Failed to fork child process", 1);
+	else if (pid == 0)
+	{
+		link_pipes(pipe, index, pipe->num_commands);
+		execute_command(pipe, index, envp);
+	}
+	else
+		pipe->pid[index] = pid;
+}
+```
 
 ### link pipes
+```c
+static void	dup2_and_check(int old_fd, int new_fd, const char *error_message)
+{
+	if (dup2(old_fd, new_fd) == -1)
+		perror_return(error_message, 1);
+}
+
+static void	link_receive_pipes(t_pipe *pipe, int index)
+{
+	if (index == 0)
+	{
+		open_in_file(pipe);
+		dup2_and_check(pipe->input_fd, STDIN_FILENO, \
+			"Failed to duplicate pipe read end");
+	}
+	else
+	{
+		dup2_and_check(pipe->pipes[index - 1][0], STDIN_FILENO, \
+			"Failed to duplicate pipe read end");
+	}
+}
+
+static void	link_give_pipes(t_pipe *pipe, int index, int num_commands)
+{
+	if (index == num_commands - 1)
+	{
+		open_out_file(pipe);
+		dup2_and_check(pipe->output_fd, STDOUT_FILENO, \
+			"Error duplicating file descriptor");
+	}
+	else
+	{
+		dup2_and_check(pipe->pipes[index][1], STDOUT_FILENO, \
+			"Failed to duplicate pipe write end");
+	}
+}
+
+static void	close_all_pipes(t_pipe *pipe, int num_commands)
+{
+	int	j;
+
+	j = 0;
+	while (j < num_commands - 1)
+	{
+		close(pipe->pipes[j][0]);
+		close(pipe->pipes[j][1]);
+		j++;
+	}
+}
+
+void	link_pipes(t_pipe *pipe, int index, int num_commands)
+{
+	link_receive_pipes(pipe, index);
+	link_give_pipes(pipe, index, num_commands);
+	close_all_pipes(pipe, num_commands);
+}
+```
