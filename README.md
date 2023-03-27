@@ -367,7 +367,7 @@ int main() {
 </details>
 
 <details>
-<summary>**Extends to Multiple childs**</summary>
+<summary> **Extends to Multiple childs** </summary>
 <div markdown="1">
 
 ```c
