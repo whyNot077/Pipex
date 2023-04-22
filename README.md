@@ -188,14 +188,31 @@ IPC mechanisms are essential for building complex systems involving multiple pro
 
 ## How does a Pipe Work?  
 
-A pipe is an IPC mechanism that allows unidirectional data transfer between two processes. One process writes data to the pipe, while the other reads data from the pipe. In Unix-like systems, the pipe system call creates a pipe, and the read and write system calls handle the data transfer through the pipe.   
+When we talk about interprocess communication, the fork() function is an inevitable topic. The fork() function creates a child process by copying an area of memory from a parent process. The parent process is the main process that is created when you run the main() function, and the child process is the process that the fork() function copies from the parent process.   
 
-Typically, a process creates a pipe using the fork system call, which spawns a new process. After the fork, the process uses the pipe() system call to create a new pipe and is given a pair of file descriptors. One file descriptor handles writing to the pipe, while the other handles reading from the pipe.  
+The child process that is copied when the fork() function is executed has exactly the same data as the parent process, including variables, file descriptors, etc., but the data areas between the processes are independent, so they generally cannot interfere with each other. Once a child process is created, it has its own memory independent of the parent process, so subsequent changes to the parent process and changes to the child process will not affect each other. However, because file descriptors are copied when forking, if you run fork() after opening pipe, you can communicate between the parent and child processes through pipe if necessary.   
 
-The parent process writes to the pipe using the write file descriptor and the child process reads from the pipe using the read file descriptor. This setup allows bi-directional communication between the two processes using the pipe.   
+Communicating between processes through a pipe is a bit like opening a tap and letting water flow into a bucket. It might make more sense to think of the water as DATA, the tap as a pipe that can only send (write), and the bucket as a pipe that can only receive (read).   
 
-Pipes are commonly used in shell scripting and other Unix-based systems to link two or more commands. This allows the output of one command to serve as the input for another, a technique known as pipeline processing, which allows complex data processing pipelines to be created with minimal effort.  
+(1) First, just like preparing the tap and the bucket to hold water, using the fork() function puts the pipe information into the file descriptor.   
 
+(2) Next, the reading process signals that it doesn't need the tap because it only needs the bucket, and the writing process signals that it doesn't need the bucket because it only needs the tap. This means that the side that is reading the information needs to close the back end of the file descriptor, leaving only the read end open and closing the write end, and the side that is writing the information needs to close the front end of the file descriptor, leaving only the write end open and closing the read end.   
+
+(3) When we're done sending data, we close the WRITE END because we need to turn off the spigot. Then, when the receiving end notices that the transfer is over, it closes the READ END and executes the command. (We can skip closing the READ END because when the command is executed, the process ends and all file descriptors are automatically closed).  
+
+Here's a quick summary of how pipes work.
+
+<img src = "./image/pipe.jpg">
+
+(1) Create a pipe: Creates a one-way pipe to transfer data between processes.  
+
+(2) Copy parent process: Create a child process by copying the memory area of the parent process using the fork() function.  
+
+(3) Send a message: Sends a message through a write-only pipe and completes programme execution.   
+
+(4) Receive a message: Receive a message through a read-only pipe and complete programme execution.  
+
+Processes can be distinguished by their process id (PID). When you call the pipe() function, it returns -1 if the pipe creation fails, 0 for child processes, and a positive PID for parent processes. Therefore, you can use the PID value after fork() to execute different commands between child and parent processes.
 ## Code
 ### Header and main
 ```c
